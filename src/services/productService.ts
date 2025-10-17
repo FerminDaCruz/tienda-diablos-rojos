@@ -1,39 +1,32 @@
-import {
-    collection,
-    doc,
-    getDocs,
-    getDoc,
-    addDoc,
-    updateDoc,
-    deleteDoc,
-    query,
-    where,
-    orderBy,
-    limit,
-    startAfter,
-    Timestamp,
-    QueryDocumentSnapshot,
-    DocumentData,
-} from "firebase/firestore";
-import { db } from "@/lib/firebase";
+import { supabase } from "@/lib/supabase";
 import { Producto, ProductoFormData, ProductoFilters } from "@/types/product";
-
-const PRODUCTOS_COLLECTION = "productos";
 
 export class ProductService {
     // Obtener todos los productos
     static async getAllProductos(): Promise<Producto[]> {
         try {
-            const productosRef = collection(db, PRODUCTOS_COLLECTION);
-            const q = query(productosRef, orderBy("fechaCreacion", "desc"));
-            const querySnapshot = await getDocs(q);
+            const { data, error } = await supabase
+                .from("productos")
+                .select("*")
+                .order("fecha_creacion", { ascending: false });
 
-            return querySnapshot.docs.map((doc) => ({
-                id: doc.id,
-                ...doc.data(),
-                fechaCreacion: doc.data().fechaCreacion?.toDate(),
-                fechaActualizacion: doc.data().fechaActualizacion?.toDate(),
-            })) as Producto[];
+            if (error) throw error;
+
+            return (
+                data?.map((item) => ({
+                    id: item.id,
+                    titulo: item.titulo,
+                    descripcion: item.descripcion,
+                    informacion: item.informacion,
+                    precio: item.precio,
+                    imagen: item.imagen,
+                    categoria: item.categoria,
+                    destacado: item.destacado,
+                    tallesDisponibles: item.talles_disponibles,
+                    fechaCreacion: new Date(item.fecha_creacion),
+                    fechaActualizacion: new Date(item.fecha_actualizacion),
+                })) || []
+            );
         } catch (error) {
             console.error("Error obteniendo productos:", error);
             throw error;
@@ -43,21 +36,30 @@ export class ProductService {
     // Obtener productos destacados
     static async getProductosDestacados(): Promise<Producto[]> {
         try {
-            const productosRef = collection(db, PRODUCTOS_COLLECTION);
-            const q = query(
-                productosRef,
-                where("destacado", "==", true),
-                orderBy("fechaCreacion", "desc"),
-                limit(8)
-            );
-            const querySnapshot = await getDocs(q);
+            const { data, error } = await supabase
+                .from("productos")
+                .select("*")
+                .eq("destacado", true)
+                .order("fecha_creacion", { ascending: false })
+                .limit(8);
 
-            return querySnapshot.docs.map((doc) => ({
-                id: doc.id,
-                ...doc.data(),
-                fechaCreacion: doc.data().fechaCreacion?.toDate(),
-                fechaActualizacion: doc.data().fechaActualizacion?.toDate(),
-            })) as Producto[];
+            if (error) throw error;
+
+            return (
+                data?.map((item) => ({
+                    id: item.id,
+                    titulo: item.titulo,
+                    descripcion: item.descripcion,
+                    informacion: item.informacion,
+                    precio: item.precio,
+                    imagen: item.imagen,
+                    categoria: item.categoria,
+                    destacado: item.destacado,
+                    tallesDisponibles: item.talles_disponibles,
+                    fechaCreacion: new Date(item.fecha_creacion),
+                    fechaActualizacion: new Date(item.fecha_actualizacion),
+                })) || []
+            );
         } catch (error) {
             console.error("Error obteniendo productos destacados:", error);
             throw error;
@@ -67,19 +69,30 @@ export class ProductService {
     // Obtener producto por ID
     static async getProductoById(id: string): Promise<Producto | null> {
         try {
-            const productoRef = doc(db, PRODUCTOS_COLLECTION, id);
-            const productoSnap = await getDoc(productoRef);
+            const { data, error } = await supabase
+                .from("productos")
+                .select("*")
+                .eq("id", id)
+                .single();
 
-            if (productoSnap.exists()) {
-                const data = productoSnap.data();
-                return {
-                    id: productoSnap.id,
-                    ...data,
-                    fechaCreacion: data.fechaCreacion?.toDate(),
-                    fechaActualizacion: data.fechaActualizacion?.toDate(),
-                } as Producto;
+            if (error) {
+                if (error.code === "PGRST116") return null; // No encontrado
+                throw error;
             }
-            return null;
+
+            return {
+                id: data.id,
+                titulo: data.titulo,
+                descripcion: data.descripcion,
+                informacion: data.informacion,
+                precio: data.precio,
+                imagen: data.imagen,
+                categoria: data.categoria,
+                destacado: data.destacado,
+                tallesDisponibles: data.talles_disponibles,
+                fechaCreacion: new Date(data.fecha_creacion),
+                fechaActualizacion: new Date(data.fecha_actualizacion),
+            };
         } catch (error) {
             console.error("Error obteniendo producto:", error);
             throw error;
@@ -91,26 +104,38 @@ export class ProductService {
         filters: ProductoFilters
     ): Promise<Producto[]> {
         try {
-            let q = query(collection(db, PRODUCTOS_COLLECTION));
+            let query = supabase.from("productos").select("*");
 
             // Aplicar filtros
             if (filters.categoria) {
-                q = query(q, where("categoria", "==", filters.categoria));
+                query = query.eq("categoria", filters.categoria);
             }
 
             if (filters.destacado !== undefined) {
-                q = query(q, where("destacado", "==", filters.destacado));
+                query = query.eq("destacado", filters.destacado);
             }
 
-            q = query(q, orderBy("fechaCreacion", "desc"));
+            // Ordenar por fecha de creación (desc)
+            query = query.order("fecha_creacion", { ascending: false });
 
-            const querySnapshot = await getDocs(q);
-            let productos = querySnapshot.docs.map((doc) => ({
-                id: doc.id,
-                ...doc.data(),
-                fechaCreacion: doc.data().fechaCreacion?.toDate(),
-                fechaActualizacion: doc.data().fechaActualizacion?.toDate(),
-            })) as Producto[];
+            const { data, error } = await query;
+
+            if (error) throw error;
+
+            let productos =
+                data?.map((item) => ({
+                    id: item.id,
+                    titulo: item.titulo,
+                    descripcion: item.descripcion,
+                    informacion: item.informacion,
+                    precio: item.precio,
+                    imagen: item.imagen,
+                    categoria: item.categoria,
+                    destacado: item.destacado,
+                    tallesDisponibles: item.talles_disponibles,
+                    fechaCreacion: new Date(item.fecha_creacion),
+                    fechaActualizacion: new Date(item.fecha_actualizacion),
+                })) || [];
 
             // Filtros que requieren procesamiento en memoria
             if (filters.search) {
@@ -145,39 +170,50 @@ export class ProductService {
     static async searchProductosPaginated(
         filters: ProductoFilters,
         pageSize: number = 20,
-        lastDoc?: QueryDocumentSnapshot<DocumentData>
+        offset: number = 0
     ): Promise<{
         items: Producto[];
-        lastDoc: QueryDocumentSnapshot<DocumentData> | null;
+        hasMore: boolean;
+        total: number;
     }> {
         try {
-            let qRef = query(collection(db, PRODUCTOS_COLLECTION));
+            let query = supabase
+                .from("productos")
+                .select("*", { count: "exact" });
 
+            // Aplicar filtros
             if (filters.categoria) {
-                qRef = query(qRef, where("categoria", "==", filters.categoria));
+                query = query.eq("categoria", filters.categoria);
             }
 
             if (filters.destacado !== undefined) {
-                qRef = query(qRef, where("destacado", "==", filters.destacado));
+                query = query.eq("destacado", filters.destacado);
             }
 
             // Ordenar por fecha de creación (desc)
-            qRef = query(qRef, orderBy("fechaCreacion", "desc"));
+            query = query.order("fecha_creacion", { ascending: false });
 
             // Paginación
-            if (lastDoc) {
-                qRef = query(qRef, startAfter(lastDoc), limit(pageSize));
-            } else {
-                qRef = query(qRef, limit(pageSize));
-            }
+            query = query.range(offset, offset + pageSize - 1);
 
-            const querySnapshot = await getDocs(qRef);
-            let productos = querySnapshot.docs.map((docSnap) => ({
-                id: docSnap.id,
-                ...docSnap.data(),
-                fechaCreacion: docSnap.data().fechaCreacion?.toDate(),
-                fechaActualizacion: docSnap.data().fechaActualizacion?.toDate(),
-            })) as Producto[];
+            const { data, error, count } = await query;
+
+            if (error) throw error;
+
+            let productos =
+                data?.map((item) => ({
+                    id: item.id,
+                    titulo: item.titulo,
+                    descripcion: item.descripcion,
+                    informacion: item.informacion,
+                    precio: item.precio,
+                    imagen: item.imagen,
+                    categoria: item.categoria,
+                    destacado: item.destacado,
+                    tallesDisponibles: item.talles_disponibles,
+                    fechaCreacion: new Date(item.fecha_creacion),
+                    fechaActualizacion: new Date(item.fecha_actualizacion),
+                })) || [];
 
             // Filtros en memoria
             if (filters.search) {
@@ -201,12 +237,13 @@ export class ProductService {
                 );
             }
 
-            const newLastDoc =
-                querySnapshot.docs.length > 0
-                    ? querySnapshot.docs[querySnapshot.docs.length - 1]
-                    : null;
+            const hasMore = offset + pageSize < (count || 0);
 
-            return { items: productos, lastDoc: newLastDoc };
+            return {
+                items: productos,
+                hasMore,
+                total: count || 0,
+            };
         } catch (error) {
             console.error("Error buscando productos paginados:", error);
             throw error;
@@ -218,13 +255,27 @@ export class ProductService {
         productoData: ProductoFormData
     ): Promise<string> {
         try {
-            const productosRef = collection(db, PRODUCTOS_COLLECTION);
-            const docRef = await addDoc(productosRef, {
-                ...productoData,
-                fechaCreacion: Timestamp.now(),
-                fechaActualizacion: Timestamp.now(),
-            });
-            return docRef.id;
+            const now = new Date().toISOString();
+
+            const { data, error } = await supabase
+                .from("productos")
+                .insert({
+                    titulo: productoData.titulo,
+                    descripcion: productoData.descripcion,
+                    informacion: productoData.informacion,
+                    precio: productoData.precio,
+                    imagen: productoData.imagen,
+                    categoria: productoData.categoria,
+                    destacado: productoData.destacado || false,
+                    talles_disponibles: productoData.tallesDisponibles,
+                    fecha_creacion: now,
+                    fecha_actualizacion: now,
+                })
+                .select("id")
+                .single();
+
+            if (error) throw error;
+            return data.id;
         } catch (error) {
             console.error("Error creando producto:", error);
             throw error;
@@ -237,11 +288,20 @@ export class ProductService {
         productoData: Partial<ProductoFormData>
     ): Promise<void> {
         try {
-            const productoRef = doc(db, PRODUCTOS_COLLECTION, id);
-            await updateDoc(productoRef, {
-                ...productoData,
-                fechaActualizacion: Timestamp.now(),
-            });
+            const now = new Date().toISOString();
+
+            const { tallesDisponibles, ...rest } = productoData;
+
+            const { error } = await supabase
+                .from("productos")
+                .update({
+                    ...rest,
+                    talles_disponibles: tallesDisponibles,
+                    fecha_actualizacion: now,
+                })
+                .eq("id", id);
+
+            if (error) throw error;
         } catch (error) {
             console.error("Error actualizando producto:", error);
             throw error;
@@ -251,8 +311,12 @@ export class ProductService {
     // Eliminar producto
     static async deleteProducto(id: string): Promise<void> {
         try {
-            const productoRef = doc(db, PRODUCTOS_COLLECTION, id);
-            await deleteDoc(productoRef);
+            const { error } = await supabase
+                .from("productos")
+                .delete()
+                .eq("id", id);
+
+            if (error) throw error;
         } catch (error) {
             console.error("Error eliminando producto:", error);
             throw error;
@@ -262,8 +326,16 @@ export class ProductService {
     // Obtener categorías únicas
     static async getCategorias(): Promise<string[]> {
         try {
-            const productos = await this.getAllProductos();
-            const categorias = [...new Set(productos.map((p) => p.categoria))];
+            const { data, error } = await supabase
+                .from("productos")
+                .select("categoria")
+                .not("categoria", "is", null);
+
+            if (error) throw error;
+
+            const categorias = [
+                ...new Set(data?.map((item) => item.categoria) || []),
+            ];
             return categorias.sort();
         } catch (error) {
             console.error("Error obteniendo categorías:", error);

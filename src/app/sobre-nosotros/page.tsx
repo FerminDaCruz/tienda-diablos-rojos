@@ -1,12 +1,12 @@
 export default function SobreNosotrosPage() {
     return (
         <div className="min-h-screen bg-primary-500 pt-20">
-            <div className="bg-white shadow">
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-                    <h1 className="text-3xl font-bold text-gray-900">
+            <div className="">
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 ">
+                    <h1 className="text-3xl font-bold text-white">
                         Sobre nosotros
                     </h1>
-                    <p className="text-gray-600 mt-2">
+                    <p className="text-white mt-2 mr-6">
                         Conocé más sobre nuestra marca y propósito.
                     </p>
                 </div>
@@ -39,53 +39,6 @@ export default function SobreNosotrosPage() {
                             garantizar buenas prácticas y generar impacto
                             positivo en nuestra comunidad.
                         </p>
-                    </div>
-
-                    <div className="bg-white rounded-lg shadow p-6">
-                        <h3 className="text-xl font-semibold text-gray-900 mb-3">
-                            Datos rápidos
-                        </h3>
-                        <ul className="text-gray-700 space-y-2 text-sm">
-                            <li>Fundación: 2018</li>
-                            <li>Equipo: 12 personas</li>
-                            <li>Envíos: a todo el país</li>
-                            <li>Calidad: control 3 etapas</li>
-                            <li>Atención: 100% personalizada</li>
-                        </ul>
-                    </div>
-                </div>
-
-                <div className="mt-10 grid grid-cols-1 md:grid-cols-3 gap-6">
-                    <div className="bg-white rounded-lg shadow p-6">
-                        <h4 className="text-lg font-semibold text-gray-900 mb-2">
-                            Misión
-                        </h4>
-                        <p className="text-gray-700 text-sm leading-relaxed">
-                            Crear productos que celebren la identidad del
-                            hincha, con diseño responsable y una experiencia de
-                            compra simple y humana.
-                        </p>
-                    </div>
-                    <div className="bg-white rounded-lg shadow p-6">
-                        <h4 className="text-lg font-semibold text-gray-900 mb-2">
-                            Visión
-                        </h4>
-                        <p className="text-gray-700 text-sm leading-relaxed">
-                            Ser la marca referente en estilo de vida del hincha
-                            rojo, expandiendo nuestra comunidad y colaboraciones
-                            locales.
-                        </p>
-                    </div>
-                    <div className="bg-white rounded-lg shadow p-6">
-                        <h4 className="text-lg font-semibold text-gray-900 mb-2">
-                            Valores
-                        </h4>
-                        <ul className="text-gray-700 text-sm list-disc pl-5 space-y-1">
-                            <li>Pasión</li>
-                            <li>Calidad</li>
-                            <li>Transparencia</li>
-                            <li>Compromiso local</li>
-                        </ul>
                     </div>
                 </div>
             </section>

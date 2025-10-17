@@ -1,8 +1,11 @@
 "use client";
 
-import { useParams } from "next/navigation";
+import Image from "next/image";
 import Link from "next/link";
+
+import { useParams } from "next/navigation";
 import { useProduct } from "@/hooks/useProducts";
+import RelatedProducts from "@/components/sections/relatedProducts";
 
 export default function ProductoPage() {
     const params = useParams();
@@ -76,12 +79,14 @@ export default function ProductoPage() {
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
                     {/* Product Image */}
-                    <div className="bg-white rounded-lg shadow-md overflow-hidden">
+                    <div className="bg-white rounded-lg shadow-md overflow-hidden flex items-center">
                         {producto.imagen ? (
-                            <img
+                            <Image
+                                width={500}
+                                height={500}
                                 src={producto.imagen}
                                 alt={producto.titulo}
-                                className="w-full h-96 object-cover"
+                                className="w-full h-96 max-h-full object-cover"
                             />
                         ) : (
                             <div className="w-full h-96 bg-gray-200 flex items-center justify-center">
@@ -112,6 +117,36 @@ export default function ProductoPage() {
                         <p className="text-gray-600 mb-6 leading-relaxed">
                             {producto.descripcion}
                         </p>
+
+                        {producto.tallesDisponibles &&
+                            producto.tallesDisponibles.length > 0 && (
+                                <div className="mb-6">
+                                    <h3 className="text-sm font-semibold text-gray-900 mb-2">
+                                        Talles disponibles
+                                    </h3>
+                                    <div className="flex flex-wrap gap-2">
+                                        {producto.tallesDisponibles.map((t) => (
+                                            <span
+                                                key={t}
+                                                className="inline-flex px-3 py-1 text-sm rounded-full bg-gray-100 text-gray-800"
+                                            >
+                                                {t}
+                                            </span>
+                                        ))}
+                                    </div>
+                                </div>
+                            )}
+
+                        {producto.informacion && (
+                            <div className="mb-6">
+                                <h3 className="text-sm font-semibold text-gray-900 mb-2">
+                                    Información sobre el producto
+                                </h3>
+                                <p className="text-gray-600 whitespace-pre-line">
+                                    {producto.informacion}
+                                </p>
+                            </div>
+                        )}
 
                         <div className="border-t border-gray-200 pt-6">
                             <div className="flex items-center justify-between mb-6">
@@ -148,12 +183,7 @@ export default function ProductoPage() {
                         </Link>
                     </div>
 
-                    <div className="bg-white p-6 rounded-lg shadow-md text-center">
-                        <p className="text-gray-500">
-                            Los productos relacionados se mostrarán aquí cuando
-                            tengas más productos en la misma categoría.
-                        </p>
-                    </div>
+                    <RelatedProducts categoria={producto.categoria} />
                 </div>
             </div>
         </div>

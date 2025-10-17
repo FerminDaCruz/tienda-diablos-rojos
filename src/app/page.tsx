@@ -3,7 +3,6 @@ import Destacados from "@/components/sections/destacados";
 import Hero from "@/components/sections/hero";
 import Pasion from "@/components/sections/pasion";
 import FAQ from "@/components/sections/faq";
-import Image from "next/image";
 import ElfsightReviews from "@/components/sections/reviews";
 
 export default function Home() {

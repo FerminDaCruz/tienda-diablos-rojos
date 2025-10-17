@@ -1,36 +1,172 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🔥 Tienda Diablos Rojos
 
-## Getting Started
+Tienda online oficial del Club Atlético Independiente construida con Next.js y Supabase.
 
-First, run the development server:
+## 🚀 Características
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+-   **Panel de Administración**: Gestión completa de productos
+-   **Catálogo Dinámico**: Búsqueda y filtros avanzados
+-   **Almacenamiento de Imágenes**: Integrado con Supabase Storage
+-   **Responsive Design**: Optimizado para móviles y desktop
+-   **Base de Datos en Tiempo Real**: Powered by Supabase
+
+## 🛠️ Tecnologías
+
+-   **Frontend**: Next.js 15, React 19, TypeScript
+-   **Backend**: Supabase (PostgreSQL + Storage)
+-   **Styling**: Tailwind CSS
+-   **Forms**: React Hook Form + Zod
+-   **Icons**: React Icons
+
+## 📦 Instalación
+
+1. **Clona el repositorio**
+
+    ```bash
+    git clone <tu-repo>
+    cd tienda-diablos-rojos
+    ```
+
+2. **Instala dependencias**
+
+    ```bash
+    npm install
+    ```
+
+3. **Configura Supabase**
+
+    ```bash
+    npm run setup-supabase
+    ```
+
+    Sigue las instrucciones para configurar tu proyecto Supabase.
+
+4. **Pobla la base de datos (opcional)**
+
+    ```bash
+    npm run populate-db
+    ```
+
+5. **Ejecuta en desarrollo**
+    ```bash
+    npm run dev
+    ```
+
+## 🔧 Configuración
+
+### Variables de Entorno
+
+Crea un archivo `.env.local` con:
+
+```env
+NEXT_PUBLIC_SUPABASE_URL=https://tu-proyecto.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=tu-anon-key
+NEXT_PUBLIC_ADMIN_USERNAME=admin
+NEXT_PUBLIC_ADMIN_PASSWORD=tu-password-seguro
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Base de Datos
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Ejecuta el SQL proporcionado en `SUPABASE_SETUP.md` para crear la tabla de productos.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### Storage
 
-## Learn More
+Configura un bucket llamado `productos` en Supabase Storage como público.
 
-To learn more about Next.js, take a look at the following resources:
+## 📱 Uso
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Panel de Administración
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+-   URL: `http://localhost:3000/admin`
+-   Usuario: `admin` (por defecto)
+-   Contraseña: `diablos2024` (por defecto)
 
-## Deploy on Vercel
+### Páginas Principales
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+-   **Inicio**: `http://localhost:3000`
+-   **Catálogo**: `http://localhost:3000/catalogo`
+-   **Producto**: `http://localhost:3000/producto/[id]`
+-   **Sobre Nosotros**: `http://localhost:3000/sobre-nosotros`
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## 🗂️ Estructura del Proyecto
+
+```
+src/
+├── app/                    # Páginas de Next.js
+│   ├── admin/             # Panel de administración
+│   ├── catalogo/          # Catálogo de productos
+│   ├── producto/[id]/     # Detalles de producto
+│   └── sobre-nosotros/     # Página informativa
+├── components/             # Componentes React
+│   ├── admin/             # Componentes del admin
+│   ├── layout/            # Header y Footer
+│   └── sections/          # Secciones de la página
+├── hooks/                 # Custom hooks
+├── lib/                   # Configuración de Supabase
+├── services/              # Servicios de datos
+└── types/                 # Tipos de TypeScript
+```
+
+## 🚀 Despliegue
+
+### Vercel (Recomendado)
+
+1. Conecta tu repositorio a Vercel
+2. Configura las variables de entorno
+3. Despliega automáticamente
+
+### Otras Plataformas
+
+Configura las variables de entorno en tu plataforma de hosting.
+
+## 📊 Scripts Disponibles
+
+```bash
+npm run dev              # Desarrollo
+npm run build           # Construir para producción
+npm run start           # Ejecutar en producción
+npm run lint            # Verificar código
+npm run setup-supabase  # Configurar Supabase
+npm run populate-db      # Poblar base de datos
+```
+
+## 🔒 Seguridad
+
+-   **RLS (Row Level Security)** habilitado en Supabase
+-   **Políticas de seguridad** configuradas
+-   **Validación de formularios** con Zod
+-   **Sanitización de datos** en todos los inputs
+
+## 📈 Próximas Funcionalidades
+
+-   [ ] Autenticación de usuarios
+-   [ ] Carrito de compras
+-   [ ] Sistema de pagos
+-   [ ] Notificaciones push
+-   [ ] Analytics avanzado
+-   [ ] Sistema de reviews
+
+## 🤝 Contribución
+
+1. Fork el proyecto
+2. Crea una rama para tu feature (`git checkout -b feature/AmazingFeature`)
+3. Commit tus cambios (`git commit -m 'Add some AmazingFeature'`)
+4. Push a la rama (`git push origin feature/AmazingFeature`)
+5. Abre un Pull Request
+
+## 📄 Licencia
+
+Este proyecto está bajo la Licencia MIT. Ver `LICENSE` para más detalles.
+
+## 🆘 Soporte
+
+Si tienes problemas:
+
+1. Revisa `SUPABASE_SETUP.md` para configuración
+2. Verifica las variables de entorno
+3. Asegúrate de que Supabase esté configurado correctamente
+4. Abre un issue en GitHub
+
+---
+
+**¡Vamos Diablos! 🔥⚽**

@@ -6,15 +6,18 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { Producto, ProductoFormData } from "@/types/product";
 import { ProductService } from "@/services/productService";
+import { StorageService } from "@/services/storageService";
+import { useCategorias } from "@/hooks/useProducts";
 
 const productSchema = z.object({
     titulo: z.string().min(1, "El título es requerido"),
     descripcion: z.string().min(1, "La descripción es requerida"),
+    informacion: z.string().optional(),
     precio: z.number().min(0, "El precio debe ser mayor a 0"),
     imagen: z.string().url("Debe ser una URL válida").or(z.literal("")),
     categoria: z.string().min(1, "La categoría es requerida"),
     destacado: z.boolean().optional(),
-    stock: z.number().min(0).optional(),
+    tallesDisponibles: z.array(z.string()).optional(),
 });
 
 interface ProductFormProps {
@@ -36,16 +39,19 @@ export default function ProductForm({
         handleSubmit,
         formState: { errors },
         reset,
+        setValue,
+        watch,
     } = useForm<ProductoFormData>({
         resolver: zodResolver(productSchema),
         defaultValues: {
             titulo: producto?.titulo || "",
             descripcion: producto?.descripcion || "",
+            informacion: producto?.informacion || "",
             precio: producto?.precio || 0,
             imagen: producto?.imagen || "",
             categoria: producto?.categoria || "",
             destacado: producto?.destacado || false,
-            stock: producto?.stock || 0,
+            tallesDisponibles: producto?.tallesDisponibles || [],
         },
     });
 
@@ -54,21 +60,49 @@ export default function ProductForm({
             reset({
                 titulo: producto.titulo,
                 descripcion: producto.descripcion,
+                informacion: producto.informacion,
                 precio: producto.precio,
                 imagen: producto.imagen,
                 categoria: producto.categoria,
                 destacado: producto.destacado,
-                stock: producto.stock,
+                tallesDisponibles: producto.tallesDisponibles,
             });
         }
     }, [producto, reset]);
+
+    const [selectedFile, setSelectedFile] = useState<File | null>(null);
+    const [tallesInput, setTallesInput] = useState<string>(
+        (producto?.tallesDisponibles || []).join(", ")
+    );
+    const categorias = [
+        "Remeras",
+        "Camisetas",
+        "Musculosas",
+        "Pantalones",
+        "Camperas",
+        "Accesorios",
+        "Zapatillas",
+        "Buzos",
+        "Medias",
+        "Short",
+        "Gorras",
+    ];
+    const categoriaValue = watch("categoria") || "";
 
     const onSubmit = async (data: ProductoFormData) => {
         setIsLoading(true);
         setError("");
 
         try {
+            // Subir imagen a Supabase Storage si se seleccionó un archivo
+            if (selectedFile) {
+                const downloadUrl = await StorageService.uploadImage(
+                    selectedFile
+                );
+                data.imagen = downloadUrl;
+            }
             if (producto) {
+                console.log("Saving product:", data);
                 await ProductService.updateProducto(producto.id, data);
             } else {
                 await ProductService.createProducto(data);
@@ -124,7 +158,7 @@ export default function ProductForm({
                     )}
                 </div>
 
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 gap-4">
                     <div>
                         <label className="block text-sm font-medium text-gray-700 mb-1">
                             Precio *
@@ -142,23 +176,6 @@ export default function ProductForm({
                             </p>
                         )}
                     </div>
-
-                    <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">
-                            Stock
-                        </label>
-                        <input
-                            {...register("stock", { valueAsNumber: true })}
-                            type="number"
-                            min="0"
-                            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500"
-                        />
-                        {errors.stock && (
-                            <p className="text-red-500 text-sm mt-1">
-                                {errors.stock.message}
-                            </p>
-                        )}
-                    </div>
                 </div>
 
                 <div>
@@ -167,15 +184,16 @@ export default function ProductForm({
                     </label>
                     <select
                         {...register("categoria")}
+                        value={categoriaValue}
+                        onChange={(e) => setValue("categoria", e.target.value)}
                         className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500"
                     >
                         <option value="">Seleccionar categoría</option>
-                        <option value="Camisetas">Camisetas</option>
-                        <option value="Shorts">Shorts</option>
-                        <option value="Accesorios">Accesorios</option>
-                        <option value="Chaquetas">Chaquetas</option>
-                        <option value="Medias">Medias</option>
-                        <option value="Pantalones">Pantalones</option>
+                        {categorias.map((c) => (
+                            <option key={c} value={c}>
+                                {c}
+                            </option>
+                        ))}
                     </select>
                     {errors.categoria && (
                         <p className="text-red-500 text-sm mt-1">
@@ -186,16 +204,59 @@ export default function ProductForm({
 
                 <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">
-                        URL de Imagen
+                        Imagen del producto
                     </label>
                     <input
-                        {...register("imagen")}
-                        type="url"
+                        type="file"
+                        accept="image/*"
+                        onChange={(e) =>
+                            setSelectedFile(e.target.files?.[0] || null)
+                        }
                         className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500"
                     />
-                    {errors.imagen && (
+                    <p className="text-xs text-gray-500 mt-1">
+                        Se subirá a Supabase Storage.
+                    </p>
+                </div>
+
+                <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                        Talles disponibles
+                    </label>
+                    <input
+                        type="text"
+                        placeholder="Ej: S, M, L, XL, 34, 48, Talle único"
+                        value={tallesInput}
+                        onChange={(e) => {
+                            const inputValue = e.target.value;
+                            setTallesInput(inputValue);
+                            const values = inputValue
+                                .split(",")
+                                .map((v) => v.trim())
+                                .filter((v) => v.length > 0);
+                            setValue("tallesDisponibles", values, {
+                                shouldDirty: true,
+                                shouldValidate: false,
+                            });
+                        }}
+                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500"
+                    />
+                    <input type="hidden" {...register("tallesDisponibles")} />
+                </div>
+
+                <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                        Información sobre el producto
+                    </label>
+                    <textarea
+                        {...register("informacion")}
+                        rows={4}
+                        placeholder="Medidas por talle, material, recomendaciones de cuidado, etc."
+                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500"
+                    />
+                    {errors.informacion && (
                         <p className="text-red-500 text-sm mt-1">
-                            {errors.imagen.message}
+                            {errors.informacion.message}
                         </p>
                     )}
                 </div>

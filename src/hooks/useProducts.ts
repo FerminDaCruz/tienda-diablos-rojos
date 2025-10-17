@@ -1,7 +1,6 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { Producto, ProductoFilters } from "@/types/product";
 import { ProductService } from "@/services/productService";
-import type { QueryDocumentSnapshot, DocumentData } from "firebase/firestore";
 
 export const useProducts = () => {
     const [productos, setProductos] = useState<Producto[]>([]);
@@ -103,7 +102,7 @@ export const useProduct = (id: string) => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
 
-    const fetchProducto = async () => {
+    const fetchProducto = useCallback(async () => {
         if (!id) return;
 
         try {
@@ -116,11 +115,11 @@ export const useProduct = (id: string) => {
         } finally {
             setLoading(false);
         }
-    };
+    }, [id]);
 
     useEffect(() => {
         fetchProducto();
-    }, [id]);
+    }, [id, fetchProducto]);
 
     return {
         producto,
@@ -167,22 +166,27 @@ export const useProductSearchPaginated = (
     const [productos, setProductos] = useState<Producto[]>([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
-    const [lastDoc, setLastDoc] =
-        useState<QueryDocumentSnapshot<DocumentData> | null>(null);
+    const [offset, setOffset] = useState<number>(0);
     const [hasMore, setHasMore] = useState<boolean>(true);
+    const [total, setTotal] = useState<number>(0);
 
     const resetAndLoad = async () => {
         try {
             setLoading(true);
             setError(null);
-            const { items, lastDoc: newLast } =
-                await ProductService.searchProductosPaginated(
-                    filters,
-                    pageSize
-                );
+            setOffset(0);
+            const {
+                items,
+                hasMore: more,
+                total: totalCount,
+            } = await ProductService.searchProductosPaginated(
+                filters,
+                pageSize,
+                0
+            );
             setProductos(items);
-            setLastDoc(newLast);
-            setHasMore(Boolean(newLast));
+            setHasMore(more);
+            setTotal(totalCount);
         } catch (err) {
             setError(err instanceof Error ? err.message : "Error desconocido");
         } finally {
@@ -194,15 +198,16 @@ export const useProductSearchPaginated = (
         if (!hasMore || loading) return;
         try {
             setLoading(true);
-            const { items, lastDoc: newLast } =
+            const newOffset = offset + pageSize;
+            const { items, hasMore: more } =
                 await ProductService.searchProductosPaginated(
                     filters,
                     pageSize,
-                    lastDoc || undefined
+                    newOffset
                 );
             setProductos((prev) => [...prev, ...items]);
-            setLastDoc(newLast);
-            setHasMore(Boolean(newLast));
+            setOffset(newOffset);
+            setHasMore(more);
         } catch (err) {
             setError(err instanceof Error ? err.message : "Error desconocido");
         } finally {
@@ -228,5 +233,6 @@ export const useProductSearchPaginated = (
         loadMore,
         hasMore,
         refresh: resetAndLoad,
+        total,
     };
 };

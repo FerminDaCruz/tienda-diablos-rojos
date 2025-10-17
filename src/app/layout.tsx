@@ -3,6 +3,8 @@ import { Poppins, Urbanist } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/layout/header";
 import Footer from "@/components/layout/footer";
+import Link from "next/link";
+import { BsWhatsapp } from "react-icons/bs";
 
 // Fuente principal
 const poppins = Poppins({
@@ -30,11 +32,23 @@ export default function RootLayout({
 }: Readonly<{
     children: React.ReactNode;
 }>) {
+    const whatsappNumber = "5491124083741"; // +54 9 11 2408-3741 en formato internacional sin + ni espacios
+    const waMessage = encodeURIComponent(
+        `Hola Nix Indumentaria, me gustaría hacer una consulta!`
+    );
     return (
         <html lang="es">
             <body className={`${poppins.variable} ${urbanist.variable}`}>
                 <Header />
                 {children}
+                <Link
+                    href={`https://wa.me/${whatsappNumber}?text=${waMessage}`}
+                    aria-label="WhatsApp"
+                    target="_blank"
+                    className="md:hidden fixed z-30 bottom-5 right-5 rounded-full p-4 bg-green-500 text-white shadow-lg flex justify-center items-center w-auto hover:bg-green-600 transition-colors"
+                >
+                    <BsWhatsapp className="size-5" />
+                </Link>
                 <Footer />
             </body>
         </html>

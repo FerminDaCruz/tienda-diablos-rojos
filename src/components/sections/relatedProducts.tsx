@@ -1,11 +1,10 @@
 "use client";
-
-import { useState, useEffect } from "react";
-import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
+import { useProductosDestacados, useProductSearch } from "@/hooks/useProducts";
 import Image from "next/image";
-import Link from "next/link";
-import { useProductosDestacados } from "@/hooks/useProducts";
+import { useState, useEffect } from "react";
 import { Producto } from "@/types/product";
+import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
+import Link from "next/link";
 
 // Componente de producto individual
 function ProductoCard({ producto }: { producto: Producto }) {
@@ -85,9 +84,8 @@ function useCarrusel(totalItems: number, itemsPerView: number) {
         maxIndex,
     };
 }
-
-export default function Destacados() {
-    const { productos, loading, error } = useProductosDestacados();
+export default function RelatedProducts({ categoria }: { categoria: string }) {
+    const { productos, loading, error } = useProductSearch({ categoria });
 
     // Configuración responsive del carrusel
     const getItemsPerView = () => {
@@ -117,86 +115,20 @@ export default function Destacados() {
     const carrusel = useCarrusel(productos.length, itemsPerView);
 
     if (loading) {
-        return (
-            <section className="w-full py-8 text-white">
-                <div className="max-w-7xl mx-auto px-8">
-                    <div className="text-center mb-12">
-                        <h2 className="text-4xl md:text-5xl font-bold mb-4 font-poppins">
-                            Productos Destacados
-                        </h2>
-                        <p className="text-lg md:text-xl max-w-2xl mx-auto">
-                            Descubre nuestra selección de productos más
-                            populares del Rey de Copas
-                        </p>
-                    </div>
-                    <div className="flex justify-center">
-                        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-white"></div>
-                    </div>
-                </div>
-            </section>
-        );
+        return <p className="text-gray-500">cargando productos...</p>;
     }
 
     if (error) {
-        return (
-            <section className="w-full py-8 text-white">
-                <div className="max-w-7xl mx-auto px-8">
-                    <div className="text-center mb-12">
-                        <h2 className="text-4xl md:text-5xl font-bold mb-4 font-poppins">
-                            Productos Destacados
-                        </h2>
-                        <p className="text-lg md:text-xl max-w-2xl mx-auto">
-                            Descubre nuestra selección de productos más
-                            populares del Rey de Copas
-                        </p>
-                    </div>
-                    <div className="text-center">
-                        <p className="text-red-200">
-                            Error al cargar los productos destacados
-                        </p>
-                    </div>
-                </div>
-            </section>
-        );
+        return <p className="text-gray-500">error al cargar productos</p>;
     }
 
     if (productos.length === 0) {
-        return (
-            <section className="w-full py-8 text-white">
-                <div className="max-w-7xl mx-auto px-8">
-                    <div className="text-center mb-12">
-                        <h2 className="text-4xl md:text-5xl font-bold mb-4 font-poppins">
-                            Productos Destacados
-                        </h2>
-                        <p className="text-lg md:text-xl max-w-2xl mx-auto">
-                            Descubre nuestra selección de productos más
-                            populares del Rey de Copas
-                        </p>
-                    </div>
-                    <div className="text-center">
-                        <p className="text-gray-300">
-                            No hay productos destacados disponibles
-                        </p>
-                    </div>
-                </div>
-            </section>
-        );
+        return <p className="text-gray-500">no hay productos relacionados</p>;
     }
 
     return (
         <section className="w-full py-8 text-white">
-            <div className="max-w-7xl mx-auto px-8">
-                {/* Header */}
-                <div className="text-center mb-12">
-                    <h2 className="text-4xl md:text-5xl font-bold mb-4 font-poppins">
-                        Productos Destacados
-                    </h2>
-                    <p className="text-lg md:text-xl max-w-2xl mx-auto">
-                        Descubre nuestra selección de productos más populares
-                        del Rey de Copas
-                    </p>
-                </div>
-
+            <div className="max-w-7xl mx-auto ">
                 {/* Carrusel */}
                 <div className="relative">
                     {/* Contenedor de productos */}

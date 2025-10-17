@@ -4,6 +4,8 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { useProductSearchPaginated, useCategorias } from "@/hooks/useProducts";
 import { ProductoFilters } from "@/types/product";
+import Image from "next/image";
+import { BiChevronLeft } from "react-icons/bi";
 
 export default function CatalogoPage() {
     const [filters, setFilters] = useState<ProductoFilters>({});
@@ -55,7 +57,7 @@ export default function CatalogoPage() {
     };
 
     const formatPrice = (price: number) => {
-        return new Intl.NumberFormat("es-CO", {
+        return new Intl.NumberFormat("es-AR", {
             style: "currency",
             currency: "COP",
             minimumFractionDigits: 0,
@@ -65,25 +67,9 @@ export default function CatalogoPage() {
     return (
         <div className="min-h-screen bg-primary-500 pt-20">
             {/* Header */}
-            <div className="bg-white shadow">
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-                    <div className="flex items-center justify-between">
-                        <div>
-                            <h1 className="text-3xl font-bold text-gray-900">
-                                Catálogo
-                            </h1>
-                            <p className="text-gray-600">
-                                Encuentra todo lo que necesitas para apoyar a
-                                los Diablos Rojos
-                            </p>
-                        </div>
-                        <Link
-                            href="/"
-                            className="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500"
-                        >
-                            Volver al Inicio
-                        </Link>
-                    </div>
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8">
+                <div>
+                    <h1 className="text-3xl font-bold text-white">Catálogo</h1>
                 </div>
             </div>
 
@@ -225,15 +211,6 @@ export default function CatalogoPage() {
                             </div>
                         ) : (
                             <>
-                                <div className="flex justify-between items-center mb-6">
-                                    <p className="text-black">
-                                        {productos.length} producto
-                                        {productos.length !== 1 ? "s" : ""}{" "}
-                                        encontrado
-                                        {productos.length !== 1 ? "s" : ""}
-                                    </p>
-                                </div>
-
                                 {productos.length === 0 ? (
                                     <div className="text-center py-12">
                                         <p className="text-gray-500 text-lg">
@@ -254,7 +231,9 @@ export default function CatalogoPage() {
                                             >
                                                 <div className="aspect-w-16 aspect-h-12">
                                                     {producto.imagen ? (
-                                                        <img
+                                                        <Image
+                                                            width={500}
+                                                            height={500}
                                                             src={
                                                                 producto.imagen
                                                             }
@@ -288,20 +267,17 @@ export default function CatalogoPage() {
                                                     <p className="text-gray-600 text-sm mb-3 line-clamp-2">
                                                         {producto.descripcion}
                                                     </p>
-                                                    <div className="flex items-center justify-between">
-                                                        <span className="text-xl font-bold text-red-600">
-                                                            {formatPrice(
-                                                                producto.precio
-                                                            )}
-                                                        </span>
-                                                        {producto.stock !==
-                                                            undefined && (
-                                                            <span className="text-sm text-gray-500">
-                                                                Stock:{" "}
-                                                                {producto.stock}
-                                                            </span>
+                                                    {producto.tallesDisponibles &&
+                                                        producto
+                                                            .tallesDisponibles
+                                                            .length > 0 && (
+                                                            <p className="text-gray-500 text-xs mb-2 line-clamp-1">
+                                                                Talles:{" "}
+                                                                {producto.tallesDisponibles.join(
+                                                                    ", "
+                                                                )}
+                                                            </p>
                                                         )}
-                                                    </div>
                                                 </div>
                                             </Link>
                                         ))}

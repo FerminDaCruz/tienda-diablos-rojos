@@ -16,7 +16,7 @@ export default function About() {
                     {/* Nuestra Historia (ocupa las 2 filas en desktop) */}
                     <div className="space-y-6 h-full text-white">
                         <div
-                            className="p-8 rounded-lg shadow-xl shadow--xl
+                            className="p-8 rounded-lg shadow-xl 
 						  h-full flex flex-col justify-center "
                         >
                             {/*<div className="p-8 rounded-lg h-full flex flex-col justify-center [box-shadow:5px_5px_10px_#000,-5px_-5px_10px_#fff]"></div>*/}

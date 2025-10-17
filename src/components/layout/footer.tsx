@@ -37,7 +37,6 @@ export default function Footer() {
                 <div>
                     <h4 className="text-lg font-semibold mb-3">Contacto</h4>
                     <ul className="text-sm space-y-1 opacity-90">
-                        <li>Email: contacto@nesso.studio</li>
                         <li>Tel: +54 9 11 2408-3741</li>
                     </ul>
                 </div>
@@ -77,7 +76,15 @@ export default function Footer() {
             </div>
             <div className="bg-red-800">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 text-center text-xs">
-                    © 2025 Nesso Studio — Todos los derechos reservados
+                    © 2025{" "}
+                    <Link
+                        href="https://www.nessostudio.com.ar"
+                        target="_blank"
+                        className="font-bold"
+                    >
+                        Nesso Studio{" "}
+                    </Link>{" "}
+                    — Todos los derechos reservados
                 </div>
             </div>
         </footer>
