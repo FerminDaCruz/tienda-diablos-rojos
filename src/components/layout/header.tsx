@@ -15,6 +15,11 @@ export default function Header() {
         setIsMenuOpen(!isMenuOpen);
     };
 
+    const whatsappNumber = "5491124083741"; // +54 9 11 2408-3741 en formato internacional sin + ni espacios
+    const waMessage = encodeURIComponent(
+        `Hola, quiero hacerte una consulta...`
+    );
+
     return (
         <>
             <header className="bg-white w-full h-20 fixed z-30">
@@ -45,8 +50,9 @@ export default function Header() {
 
                     {/* Desktop WhatsApp Button */}
                     <Link
-                        href="#"
-                        className="font-bold bg-green-500 text-white px-4 py-2 rounded-lg text-center flex justify-center items-center gap-2 hover:bg-green-400 transition-colors duration-300 hidden md:flex"
+                        href={`https://wa.me/${whatsappNumber}?text=${waMessage}`}
+                        className="font-bold bg-green-500 text-white px-4 py-2 rounded-lg text-center justify-center items-center gap-2 hover:bg-green-400 transition-colors duration-300 hidden md:flex"
+                        target="_blank"
                     >
                         <FaWhatsapp className="size-7" />
                         Whatsapp
@@ -118,16 +124,18 @@ export default function Header() {
                         </h4>
                         <div className="flex items-center gap-4">
                             <Link
-                                href="#"
+                                href={`https://wa.me/${whatsappNumber}?text=${waMessage}`}
                                 aria-label="WhatsApp"
                                 className="text-green-500 hover:text-green-400 transition-colors duration-300 text-2xl"
+                                target="_blank"
                             >
                                 <BsWhatsapp />
                             </Link>
                             <Link
-                                href="#"
+                                href="https://www.instagram.com/tienda_diablosrojos/"
                                 aria-label="Instagram"
                                 className="text-pink-500 hover:text-pink-400 transition-colors duration-300 text-2xl"
+                                target="_blank"
                             >
                                 <BsInstagram />
                             </Link>
@@ -135,13 +143,15 @@ export default function Header() {
                                 href="#"
                                 aria-label="Facebook"
                                 className="text-blue-600 hover:text-blue-500 transition-colors duration-300 text-2xl"
+                                target="_blank"
                             >
                                 <BsFacebook />
                             </Link>
                             <Link
-                                href="#"
+                                href="https://www.google.com/maps/place/NIX+INDUMENTARIA/@-34.6708953,-58.391208,14z/data=!3m1!4b1!4m6!3m5!1s0x95bccda496cbd66d:0xa699828b0c2f5345!8m2!3d-34.6708952!4d-58.391208!16s%2Fg%2F11h7frqkdp?entry=ttu&g_ep=EgoyMDI1MTAxNC4wIKXMDSoASAFQAw%3D%3D"
                                 aria-label="Google Maps"
                                 className="text-red-500 hover:text-red-400 transition-colors duration-300 text-2xl"
+                                target="_blank"
                             >
                                 <SiGooglemaps />
                             </Link>

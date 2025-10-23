@@ -157,14 +157,14 @@ export default function ProductoPage() {
                                 </div>
                             </div>
 
-                            <a
+                            <Link
                                 href={`https://wa.me/${whatsappNumber}?text=${waMessage}`}
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className="w-full inline-flex items-center justify-center gap-2 bg-green-600 text-white py-3 px-6 rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 font-semibold text-lg"
                             >
                                 Consultar por WhatsApp
-                            </a>
+                            </Link>
                         </div>
                     </div>
                 </div>

@@ -37,7 +37,7 @@ function ProductoCard({ producto }: { producto: Producto }) {
                     <span className="text-xs text-primary-500 font-medium uppercase tracking-wide">
                         {producto.categoria}
                     </span>
-                    <h3 className="text-lg font-bold text-gray-800 mt-1 font-poppins">
+                    <h3 className="text-lg font-bold text-gray-800 mt-1 font-poppins line-clamp-2 ">
                         {producto.titulo}
                     </h3>
                     <p className="text-gray-600 text-sm mt-2 line-clamp-2 h-10 leading-5 overflow-hidden">

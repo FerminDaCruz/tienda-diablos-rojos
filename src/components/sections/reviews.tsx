@@ -2,6 +2,12 @@
 
 import { useEffect } from "react";
 
+declare global {
+    interface Window {
+        ElfsightApp?: { init: () => void };
+    }
+}
+
 export default function ElfsightReviews() {
     useEffect(() => {
         // Si el script no está agregado aún, lo agregamos

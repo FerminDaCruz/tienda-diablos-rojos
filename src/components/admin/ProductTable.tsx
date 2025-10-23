@@ -115,9 +115,6 @@ export default function ProductTable({
                                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                                     {formatPrice(producto.precio)}
                                 </td>
-                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                                    {producto.stock || 0}
-                                </td>
                                 <td className="px-6 py-4 whitespace-nowrap">
                                     {producto.destacado ? (
                                         <span className="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800">

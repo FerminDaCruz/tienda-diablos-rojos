@@ -5,7 +5,6 @@ import Link from "next/link";
 import { useProductSearchPaginated, useCategorias } from "@/hooks/useProducts";
 import { ProductoFilters } from "@/types/product";
 import Image from "next/image";
-import { BiChevronLeft } from "react-icons/bi";
 
 export default function CatalogoPage() {
     const [filters, setFilters] = useState<ProductoFilters>({});
@@ -57,7 +56,7 @@ export default function CatalogoPage() {
     };
 
     const formatPrice = (price: number) => {
-        return new Intl.NumberFormat("es-AR", {
+        return new Intl.NumberFormat("es-CO", {
             style: "currency",
             currency: "COP",
             minimumFractionDigits: 0,
