@@ -58,7 +58,7 @@ export default function ProductoPage() {
     );
 
     return (
-        <div className="min-h-screen bg-gray-50 pt-20">
+        <div className="min-h-screen bg-primary-500 pt-20">
             {/* Header */}
             <div className="bg-white shadow">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
@@ -79,7 +79,7 @@ export default function ProductoPage() {
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
                     {/* Product Image */}
-                    <div className="bg-white rounded-lg shadow-md overflow-hidden flex items-center">
+                    <div className="bg-black rounded-lg shadow-md overflow-hidden flex items-center">
                         {producto.imagen ? (
                             <Image
                                 width={500}
@@ -171,13 +171,13 @@ export default function ProductoPage() {
 
                 {/* Related Products Section */}
                 <div className="mt-12">
-                    <div className="flex items-center justify-between mb-6">
-                        <h2 className="text-2xl font-bold text-gray-900">
+                    <div className="flex items-center justify-between flex-col sm:flex-row gap-5">
+                        <h2 className="text-3xl font-bold text-white text-center">
                             Productos Relacionados
                         </h2>
                         <Link
                             href="/catalogo"
-                            className="text-red-600 hover:text-red-700 font-medium"
+                            className="text-white hover:text-gray-50 font-medium"
                         >
                             Ver todos los productos →
                         </Link>

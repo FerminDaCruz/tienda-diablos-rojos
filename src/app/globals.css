@@ -27,5 +27,19 @@
     --color-primary-900: #3f1610;
 
     --font-poppins: var(--poppins);
-    --font-poppins: var(--urbanist);
+    --font-urbanist: var(--urbanist);
+}
+
+@keyframes scale {
+    0%,
+    100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.1);
+    }
+}
+
+.animate-scale {
+    animation: scale 1.5s ease-in-out infinite;
 }

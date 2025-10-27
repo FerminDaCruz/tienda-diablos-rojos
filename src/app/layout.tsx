@@ -45,9 +45,10 @@ export default function RootLayout({
                     href={`https://wa.me/${whatsappNumber}?text=${waMessage}`}
                     aria-label="WhatsApp"
                     target="_blank"
-                    className="md:hidden fixed z-30 bottom-5 right-5 rounded-full p-4 bg-green-500 text-white shadow-lg flex justify-center items-center w-auto hover:bg-green-600 transition-colors"
+                    className="md:hidden fixed z-30 bottom-5 right-5 rounded-full p-3 bg-green-500 text-white shadow-lg flex justify-center items-center w-auto hover:bg-green-600 transition-colors
+					animate-scale"
                 >
-                    <BsWhatsapp className="size-5" />
+                    <BsWhatsapp className="size-7" />
                 </Link>
                 <Footer />
             </body>

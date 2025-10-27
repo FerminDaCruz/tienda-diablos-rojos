@@ -66,13 +66,13 @@ export default function CatalogoPage() {
     return (
         <div className="min-h-screen bg-primary-500 pt-20">
             {/* Header */}
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8">
-                <div>
-                    <h1 className="text-3xl font-bold text-white">Catálogo</h1>
-                </div>
+            <div className="mx-auto px-4 sm:px-6 lg:px-8 pt-8">
+                <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white text-center font-urbanist">
+                    Catálogo
+                </h1>
             </div>
 
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
                 <div className="flex flex-col lg:flex-row gap-8">
                     {/* Sidebar Filters */}
                     <div className="lg:w-1/4">

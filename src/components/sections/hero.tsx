@@ -20,7 +20,7 @@ export default function Hero() {
                 className="pointer-events-none"
             />
             <div className="h-full flex justify-center items-center flex-col px-6">
-                <h1 className="font-bold text-6xl text-center">
+                <h1 className="font-bold text-6xl text-center font-urbanist pb-4">
                     Tienda Diablos Rojos
                 </h1>
                 <p className="text-lg text-center">
