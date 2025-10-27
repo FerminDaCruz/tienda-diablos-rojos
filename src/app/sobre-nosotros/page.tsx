@@ -9,8 +9,8 @@ export default function SobreNosotrosPage() {
                 </h1>
             </div>
 
-            <section className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8  py-5 sm:py-10 lg:py-20 grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
-                <div>
+            <section className="max-w-5xl mx-auto px-6 lg:px-8  py-5 sm:py-10 lg:py-20 grid grid-cols-1 lg:grid-cols-2 gap-12 items-start ">
+                <div className="max-w-xl mx-auto text-center">
                     <p className="text-white leading-relaxed mb-4">
                         <strong>Nix Indumentaria</strong> nació en 2018 con la
                         idea de acercar productos de diseño y calidad a la
@@ -38,11 +38,11 @@ export default function SobreNosotrosPage() {
                     </p>
                 </div>
                 <Image
-                    src="/imagen-prueba.png"
+                    src="/nuestra-historia-nix.jpg"
                     width={500}
                     height={500}
                     alt="imagen sobre nosotros"
-                    className="rounded-lg object-cover"
+                    className="rounded-lg object-cover aspect-square mx-auto"
                 />
             </section>
         </div>

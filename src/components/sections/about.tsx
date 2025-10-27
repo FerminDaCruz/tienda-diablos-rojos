@@ -50,11 +50,11 @@ export default function About() {
                         </div>
                     </div>
                     <Image
-                        src="/imagen-prueba.png"
+                        src="/nuestra-historia-nix.jpg"
                         width={500}
                         height={500}
                         alt="imagen nuestra historia"
-                        className="rounded-lg shadow-lg "
+                        className="rounded-lg shadow-lg object-cover aspect-square "
                     ></Image>
                 </div>
             </div>
