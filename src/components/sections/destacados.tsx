@@ -43,10 +43,7 @@ function ProductoCard({ producto }: { producto: Producto }) {
                     <p className="text-gray-600 text-sm mt-2 line-clamp-2 h-10 leading-5 overflow-hidden">
                         {producto.descripcion}
                     </p>
-                    <div className="mt-3 flex items-center justify-between">
-                        <span className="text-xl font-bold text-primary-500">
-                            {formatPrice(producto.precio)}
-                        </span>
+                    <div className="mt-3 flex items-center justify-center">
                         <span className="bg-primary-500 text-white px-4 py-2 rounded-md hover:bg-primary-600 transition-colors text-sm font-medium">
                             Ver más
                         </span>

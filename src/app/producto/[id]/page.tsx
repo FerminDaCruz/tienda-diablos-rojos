@@ -149,14 +149,6 @@ export default function ProductoPage() {
                         )}
 
                         <div className="border-t border-gray-200 pt-6">
-                            <div className="flex items-center justify-between mb-6">
-                                <div>
-                                    <span className="text-3xl font-bold text-red-600">
-                                        {formatPrice(producto.precio)}
-                                    </span>
-                                </div>
-                            </div>
-
                             <Link
                                 href={`https://wa.me/${whatsappNumber}?text=${waMessage}`}
                                 target="_blank"

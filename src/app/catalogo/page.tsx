@@ -224,59 +224,38 @@ export default function CatalogoPage() {
                                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                                         {productos.map((producto) => (
                                             <Link
-                                                key={producto.id}
                                                 href={`/producto/${producto.id}`}
-                                                className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300"
+                                                key={producto.id}
                                             >
-                                                <div className="aspect-w-16 aspect-h-12">
-                                                    {producto.imagen ? (
+                                                <div className="bg-white rounded-lg shadow-lg border border-gray-200 hover:shadow-xl transition-shadow duration-300 overflow-hidden cursor-pointer">
+                                                    <div className="aspect-square bg-gray-100 flex items-center justify-center">
                                                         <Image
-                                                            width={500}
-                                                            height={500}
                                                             src={
                                                                 producto.imagen
+                                                                    ? producto.imagen
+                                                                    : "https://www.shutterstock.com/image-vector/default-ui-image-placeholder-wireframes-600nw-1037719192.jpg"
                                                             }
                                                             alt={
                                                                 producto.titulo
                                                             }
-                                                            className="w-full h-48 object-cover"
+                                                            width={300}
+                                                            height={300}
+                                                            className="w-full h-full object-cover"
                                                         />
-                                                    ) : (
-                                                        <div className="w-full h-48 bg-gray-200 flex items-center justify-center">
-                                                            <span className="text-gray-500">
-                                                                Sin imagen
-                                                            </span>
-                                                        </div>
-                                                    )}
-                                                </div>
-                                                <div className="p-4">
-                                                    <div className="flex items-center justify-between mb-2">
-                                                        <span className="text-sm text-gray-500">
+                                                    </div>
+                                                    <div className="p-4">
+                                                        <span className="text-xs text-primary-500 font-medium uppercase tracking-wide">
                                                             {producto.categoria}
                                                         </span>
-                                                        {producto.destacado && (
-                                                            <span className="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-red-100 text-red-800">
-                                                                Destacado
-                                                            </span>
-                                                        )}
+                                                        <h3 className="text-lg font-bold text-gray-800 mt-1 font-poppins line-clamp-2 ">
+                                                            {producto.titulo}
+                                                        </h3>
+                                                        <p className="text-gray-600 text-sm mt-2 line-clamp-2 h-10 leading-5 overflow-hidden">
+                                                            {
+                                                                producto.descripcion
+                                                            }
+                                                        </p>
                                                     </div>
-                                                    <h3 className="text-lg font-semibold text-gray-900 mb-2 line-clamp-2">
-                                                        {producto.titulo}
-                                                    </h3>
-                                                    <p className="text-gray-600 text-sm mb-3 line-clamp-2">
-                                                        {producto.descripcion}
-                                                    </p>
-                                                    {producto.tallesDisponibles &&
-                                                        producto
-                                                            .tallesDisponibles
-                                                            .length > 0 && (
-                                                            <p className="text-gray-500 text-xs mb-2 line-clamp-1">
-                                                                Talles:{" "}
-                                                                {producto.tallesDisponibles.join(
-                                                                    ", "
-                                                                )}
-                                                            </p>
-                                                        )}
                                                 </div>
                                             </Link>
                                         ))}
