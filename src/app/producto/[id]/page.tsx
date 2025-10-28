@@ -5,6 +5,46 @@ import Link from "next/link";
 import { useParams } from "next/navigation";
 import { useProduct } from "@/hooks/useProducts";
 import RelatedProducts from "@/components/sections/relatedProducts";
+import { BiShare } from "react-icons/bi";
+import { CgShare } from "react-icons/cg";
+import { CiShare2 } from "react-icons/ci";
+
+const ShareButton = ({
+    title,
+    text,
+    url,
+}: {
+    title: string;
+    text: string;
+    url: string;
+}) => {
+    const handleShare = async () => {
+        if (navigator.share) {
+            try {
+                await navigator.share({
+                    title,
+                    text,
+                    url,
+                });
+            } catch (error) {
+                console.error("Error al compartir:", error);
+            }
+        } else {
+            alert(
+                "La función de compartir no está disponible en este dispositivo."
+            );
+        }
+    };
+
+    return (
+        <button
+            onClick={handleShare}
+            className="flex sm:hidden justify-center items-center gap-2 text-primary-500 bg-gray-200/50 font-medium p-2 rounded-full transition absolute bottom-3 right-3"
+        >
+            <CiShare2 className="w-7 h-7" />
+        </button>
+    );
+};
 
 export default function ProductoPage() {
     const params = useParams();
@@ -78,15 +118,22 @@ export default function ProductoPage() {
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
                     {/* Product Image */}
-                    <div className="bg-black rounded-lg shadow-md overflow-hidden flex items-center">
+                    <div className="bg-black rounded-lg shadow-md overflow-hidden flex items-center relative">
                         {producto.imagen ? (
-                            <Image
-                                width={500}
-                                height={500}
-                                src={producto.imagen}
-                                alt={producto.titulo}
-                                className="w-full h-96 max-h-full object-cover"
-                            />
+                            <>
+                                <Image
+                                    width={500}
+                                    height={500}
+                                    src={producto.imagen}
+                                    alt={producto.titulo}
+                                    className="w-full h-96 max-h-full object-cover"
+                                />
+                                <ShareButton
+                                    title={producto.titulo}
+                                    text={producto.descripcion}
+                                    url={`https://tienda-diablos-rojos.vercel.app/producto/${producto.id}`}
+                                />
+                            </>
                         ) : (
                             <div className="w-full h-96 bg-gray-200 flex items-center justify-center">
                                 <span className="text-gray-500 text-lg">
