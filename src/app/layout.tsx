@@ -25,7 +25,7 @@ const urbanist = Urbanist({
 export const metadata: Metadata = {
     title: "Tienda Diablos Rojos | Indumentaria oficial y accesorios",
     description:
-        "Descubrí la tienda oficial de los Diablos Rojos. Ropa, accesorios y productos exclusivos para hinchas que viven el club con pasión.",
+        "Ropa, accesorios y productos exclusivos para hinchas de independiente que viven el club con pasión.",
     keywords: [
         "Diablos Rojos",
         "tienda Diablos Rojos",
@@ -41,8 +41,8 @@ export const metadata: Metadata = {
     openGraph: {
         title: "Tienda Diablos Rojos | Indumentaria oficial y accesorios",
         description:
-            "Ropa y accesorios exclusivos de los Diablos Rojos. Calidad, identidad y pasión en cada prenda.",
-        url: "https://tiendadiablosrojos.com",
+            "Ropa, accesorios y productos exclusivos para hinchas de independiente que viven el club con pasión.",
+        url: "https://tienda-diablos-rojos.vercel.app",
         siteName: "Tienda Diablos Rojos",
         images: [
             {
