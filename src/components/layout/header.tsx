@@ -25,11 +25,11 @@ export default function Header() {
             <header className="bg-white w-full h-20 fixed z-30">
                 <div className="container mx-auto h-full flex justify-between items-center px-3">
                     <Image
-                        src="/nix-logo.png"
+                        src="/nix-logo-crop.png"
                         width={300}
                         height={300}
-                        alt="diablito logo"
-                        className="h-60 w-auto"
+                        alt="logo"
+                        className="h-10 md:h-15 w-auto"
                     />
 
                     {/* Desktop Navigation */}
