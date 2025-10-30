@@ -42,7 +42,7 @@ export const metadata: Metadata = {
         title: "Tienda Diablos Rojos | Indumentaria oficial y accesorios",
         description:
             "Ropa, accesorios y productos exclusivos para hinchas de independiente que viven el club con pasión.",
-        url: "https://tienda-diablos-rojos.vercel.app",
+        url: "https://nixindumentaria.com",
         siteName: "Tienda Diablos Rojos",
         images: [
             {
@@ -68,7 +68,7 @@ export const metadata: Metadata = {
         shortcut: "/diablito_rojo.pngo",
         apple: "/diablito_rojo.png",
     },
-    metadataBase: new URL("https://tiendadiablosrojos.com"),
+    metadataBase: new URL("https://nixindumentaria.com"),
 };
 
 export default function RootLayout({

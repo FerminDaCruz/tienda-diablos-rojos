@@ -22,7 +22,7 @@ export async function generateMetadata({
             producto.descripcion?.slice(0, 150) ||
             "Descubrí este producto exclusivo de Tienda Diablos Rojos.";
         const imageUrl = producto.imagen || "/diablito_rojo.png";
-        const url = `https://tiendadiablosrojos.com/producto/${params.id}`;
+        const url = `https://nixindumentaria.com/producto/${params.id}`;
 
         return {
             title,
